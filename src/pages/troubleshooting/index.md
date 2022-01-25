@@ -64,7 +64,7 @@ $token = New-PartnerAccessToken @UpdateRefreshTokenParamaters
 
 $Exchangetoken = New-PartnerAccessToken @UpdateExchangeTokenParamaters 
 
-### Output Refresh Tokens and Exchange Refresh Tokens ###
+### Output Refresh Token and Exchange Refresh Token ###
 
 Write-Host "================ Secrets ================"
 Write-Host "`$ApplicationId         = $($applicationID)"
@@ -75,6 +75,8 @@ write-host "`$ExchangeRefreshToken  = $($ExchangeToken.Refreshtoken)" -Foregroun
 Write-Host "================ Secrets ================"
 Write-Host "    SAVE THESE IN A SECURE LOCATION     "
 ```
+
+
 
 1. Go to CIPP
 1. Go to Settings
