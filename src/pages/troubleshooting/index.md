@@ -24,14 +24,48 @@ deployment fields.
 [Refresh your tokens with this script:](https://www.cyberdrain.com/automating-with-powershell-getting-new-secure-app-model-tokens/)
 
 ```powershell title="Update-SecureAcessModelTokens.ps1"
-### Update these variables ###
-$ApplicationId = 'ApplicationID'
-$ApplicationSecret = 'Secret' | Convertto-SecureString -AsPlainText -Force
-$TenantID = 'YourTenantID'
-### End of update section. ###
+### User Input Variables ###
+
+### Enter the details of your Secure Access Model Application below ###
+
+$ApplicationId           = '<YOUR APPLICATION ID>'
+$ApplicationSecret       = '<YOUR APPLICATION SECRET>' | ConvertTo-SecureString -AsPlainText -Force
+$TenantID                = '<YOUR TENANT ID>'
+
+### Splat Params required for Updating Refresh Token ###
+
+$UpdateRefreshTokenParamaters = @{
+    ApplicationID        = $ApplicationId
+    ApplicationSecret    = $ApplicationSecret
+    Tenant               = $TenantID
+    Scopes               = 'https://api.partnercenter.microsoft.com/user_impersonation'
+    Credential           = $credential
+    UseAuthorizationCode = $true
+}
+
+### Splat Params required for Updating Exchange Refresh Token ###
+
+$UpdateExchangeTokenParamaters = @{
+    ApplicationID           = 'a0c73c16-a7e3-4564-9a95-2bdf47383716'
+    Scopes                  = 'https://outlook.office365.com/.default'
+    Tenant                  = $TenantID
+    UseDeviceAuthentication = $true
+}
+
+### Create credential object using UserEntered(ApplicationID) and UserEntered(ApplicationSecret) ###
+
 $credential = New-Object System.Management.Automation.PSCredential($ApplicationId, $ApplicationSecret)
-$token = New-PartnerAccessToken -ApplicationId $ApplicationID -Scopes 'https://api.partnercenter.microsoft.com/user_impersonation' -ServicePrincipal -Credential $credential -Tenant $TenantID -UseAuthorizationCode
-$Exchangetoken = New-PartnerAccessToken -ApplicationId 'a0c73c16-a7e3-4564-9a95-2bdf47383716' -Scopes 'https://outlook.office365.com/.default' -Tenant $TenantID -UseDeviceAuthentication
+
+### Create new Refresh Token using previously splatted paramaters ###
+
+$token = New-PartnerAccessToken @UpdateRefreshTokenParamaters
+
+### Create new Exchange Refresh Token using previously splatted paramaters ###
+
+$Exchangetoken = New-PartnerAccessToken @UpdateExchangeTokenParamaters 
+
+### Output Refresh Tokens and Exchange Refresh Tokens ###
+
 Write-Host "================ Secrets ================"
 Write-Host "`$ApplicationId         = $($applicationID)"
 Write-Host "`$ApplicationSecret     = $($ApplicationSecret)"
