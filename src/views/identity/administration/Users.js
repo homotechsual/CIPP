@@ -12,7 +12,7 @@ import { CippActionsOffcanvas } from 'src/components/utilities'
 const Offcanvas = (row, rowIndex, formatExtraData) => {
   const tenant = useSelector((state) => state.app.currentTenant)
   const [ocVisible, setOCVisible] = useState(false)
-  const viewLink = `/identity/administration/users/view?userId=${row.id}&tenantDomain=${tenant.defaultDomainName}`
+  const viewLink = `/identity/administration/users/view?userId=${row.id}&tenantDomain=${tenant.defaultDomainName}&userEmail=${row.mail}`
   const editLink = `/identity/administration/users/edit?userId=${row.id}&tenantDomain=${tenant.defaultDomainName}`
   //console.log(row)
   return (
@@ -85,6 +85,13 @@ const Offcanvas = (row, rowIndex, formatExtraData) => {
             modal: true,
             modalUrl: `/api/ExecDisableUser?TenantFilter=${tenant.defaultDomainName}&ID=${row.id}`,
             modalMessage: 'Are you sure you want to block the sign in for this user?',
+          },
+          {
+            label: 'Unblock Sign In',
+            color: 'info',
+            modal: true,
+            modalUrl: `/api/ExecDisableUser?Enable=true&TenantFilter=${tenant.defaultDomainName}&ID=${row.id}`,
+            modalMessage: 'Are you sure you want to enable this user?',
           },
           {
             label: 'Reset Password (Must Change)',
