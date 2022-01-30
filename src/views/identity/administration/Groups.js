@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CippPageList } from 'src/components/layout'
 import { TitleButton } from 'src/components/buttons'
 
-const Offcanvas = (row, rowIndex, formatExtraData) => {
+const Actions = (row, rowIndex, formatExtraData) => {
   const tenant = useSelector((state) => state.app.currentTenant)
   return (
     <>
@@ -53,6 +53,7 @@ const columns = [
   {
     name: 'On-Prem Sync',
     selector: (row) => row['onPremisesSyncEnabled'],
+    sortable: true,
     cell: cellBooleanFormatter({ warning: true }),
     exportSelector: 'onPremisessSyncEnabled',
   },
@@ -64,7 +65,7 @@ const columns = [
   },
   {
     name: 'Actions',
-    cell: Offcanvas,
+    cell: Actions,
   },
 ]
 
