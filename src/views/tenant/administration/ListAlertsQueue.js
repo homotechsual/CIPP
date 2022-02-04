@@ -1,45 +1,13 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { CSpinner, CButton, CCallout } from '@coreui/react'
-import { faCheck, faExclamationTriangle, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { CippPageList } from 'src/components/layout'
 import { ModalService } from 'src/components/utilities'
 import { useLazyGenericGetRequestQuery } from 'src/store/api/app'
 
-const RefreshAction = () => {
-  const [execStandards, execStandardsResults] = useLazyGenericGetRequestQuery()
-
-  const showModal = () =>
-    ModalService.confirm({
-      body: (
-        <div>
-          Deploy all queued applications to tenants?
-          <br />
-          <i>Please note: This job runs automatically every 12 hours.</i>
-        </div>
-      ),
-      onConfirm: () => execStandards({ path: 'api/AddChocoApp_OrchestrationStarter' }),
-    })
-
-  return (
-    <>
-      {execStandardsResults.data?.Results ===
-        'Already running. Please wait for the current instance to finish' && (
-        <div> {execStandardsResults.data?.Results}</div>
-      )}
-      <CButton onClick={showModal} size="sm" className="m-1">
-        {execStandardsResults.isLoading && <CSpinner size="sm" />}
-        {execStandardsResults.error && (
-          <FontAwesomeIcon icon={faExclamationTriangle} className="pe-1" />
-        )}
-        {execStandardsResults.isSuccess && <FontAwesomeIcon icon={faCheck} className="pe-1" />}
-        Deploy now
-      </CButton>
-    </>
-  )
-}
-const ListApplicationQueue = () => {
+const ListAlertsQueue = () => {
   const [ExecuteGetRequest, getResults] = useLazyGenericGetRequestQuery()
   const Actions = (row, index, column) => {
     const handleDeleteStandard = (apiurl, message) => {
@@ -73,28 +41,19 @@ const ListApplicationQueue = () => {
       selector: (row) => row['tenantName'],
       sortable: true,
       exportSelector: 'tenantName',
+      grow: 0,
     },
     {
-      name: 'Application Name',
-      selector: (row) => row['applicationName'],
+      name: 'Alerts',
+      selector: (row) => row['alerts'],
       sortable: true,
-      exportSelector: 'applicationName',
-    },
-    {
-      name: 'Install command',
-      selector: (row) => row['cmdLine'],
-      sortable: true,
-      exportSelector: 'cmdLine',
-    },
-    {
-      name: 'Assign To',
-      selector: (row) => row['assignTo'],
-      sortable: true,
-      exportSelector: 'assignTo',
+      exportSelector: 'alerts',
+      grow: 1,
     },
     {
       name: 'Actions',
       cell: Actions,
+      grow: 0,
     },
   ]
   const tenant = useSelector((state) => state.app.currentTenant)
@@ -111,16 +70,13 @@ const ListApplicationQueue = () => {
         <CCallout color="danger">Could not connect to API: {getResults.error.message}</CCallout>
       )}
       <CippPageList
-        title="Queued Applications"
+        title="Scheduled Alerts"
         tenantSelector={false}
         datatable={{
-          tableProps: {
-            actions: [<RefreshAction key="refresh-action-button" />],
-          },
           keyField: 'id',
           columns,
-          reportName: `ApplicationQueue-List`,
-          path: '/api/ListApplicationQueue',
+          reportName: `AlertsQueue-List`,
+          path: '/api/ListAlertsQueue',
           params: { TenantFilter: tenant?.defaultDomainName },
         }}
       />
@@ -128,4 +84,4 @@ const ListApplicationQueue = () => {
   )
 }
 
-export default ListApplicationQueue
+export default ListAlertsQueue
