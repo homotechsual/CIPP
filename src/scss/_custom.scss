@@ -55,6 +55,7 @@
 
 .btn {
   border-radius: var(--cipp-border-radius);
+  white-space: nowrap;
 }
 
 .card {
@@ -62,7 +63,7 @@
 
   .card-header {
     &:first-child {
-      border-radius: var(--cipp-border-radius);
+      border-radius: var(--cipp-border-radius) var(--cipp-border-radius) 0 0;
     }
   }
 
@@ -344,6 +345,30 @@
   }
 }
 
+.rdt_TableRow.mbusage-warning {
+  background-color: color.adjust($cyberdrain-warning, $alpha: -0.5) !important;
+
+  .text-success {
+    color: var(--cui-body-color) !important;
+  }
+
+  .text-danger {
+    color: var(--cui-body-color) !important;
+  }
+}
+
+.rdt_TableRow.mbusage-danger {
+  background-color: color.adjust($cyberdrain-danger, $alpha: -0.5) !important;
+
+  .text-success {
+    color: var(--cui-body-color) !important;
+  }
+
+  .text-danger {
+    color: var(--cui-body-color) !important;
+  }
+}
+
 /* Footer */
 .footer {
   p {
@@ -353,4 +378,18 @@
   img {
     max-height: 2rem;
   }
+}
+
+/* Toasts */
+
+.toast-body {
+  .btn {
+    margin-left: 1rem;
+  }
+}
+
+/* Sidebar */
+
+.sidebar-nav .nav-link {
+  margin: 0.25rem 0;
 }
