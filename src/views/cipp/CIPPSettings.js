@@ -160,18 +160,21 @@ const GeneralSettings = () => {
       })
       tokenItems.push({
         heading: 'App Registration',
-        content: tokenDetails?.AppName,
-      })
-      tokenItems.push({
-        heading: 'App ID',
-        content: tokenDetails?.AppId,
+        content: (
+          <CLink
+            href={`https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/Overview/appId/${tokenDetails?.AppId}/isMSAApp/`}
+            target="_blank"
+          >
+            {tokenDetails?.AppName}
+          </CLink>
+        ),
       })
       tokenItems.push({
         heading: 'IP Address',
         content: tokenDetails?.IPAddress,
       })
       tokenItems.push({
-        heading: 'Auth Claims',
+        heading: 'Auth Methods',
         content: tokenDetails?.AuthMethods.join(', '),
       })
       tokenItems.push({
@@ -520,7 +523,7 @@ const SecuritySettings = () => {
                 <CCardTitle>Static Web App (Role Management)</CCardTitle>
               </CCardHeader>
               <CCardBody className="equalheight">
-                The Statis Web App role management allows you to invite other users to the
+                The Static Web App role management allows you to invite other users to the
                 application.
                 <br /> <br />
                 <a
